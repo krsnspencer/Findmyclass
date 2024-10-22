@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="logo image.jpg">
+    <link rel="shortcut icon" type="image/x-icon" href="logo image.jpg">
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .profile-container {
+            max-width: 1000px;
+            width: 400%;
+            margin: auto;
+            padding: 100px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            position: relative;
+            text-align: center;
+        }
+.profile-picture {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+  }
+
+  #profile-picture {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the entire circular space */
+  }
+        
+
+        .user-info h1 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .user-info p {
+            color: #555;
+            margin: 5px 0;
+        }
+
+        .go-back {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        .edit-profile,
+        .go-back,
+        .sign-out {
+            display: inline-block;
+            margin: 10px;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #3498db;
+            border: 1px solid #3498db;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .edit-profile:hover,
+        .go-back:hover,
+        .sign-out:hover {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        .edit-form {
+            text-align: left;
+            margin-top: 20px;
+            display: none; /* Hidden by default */
+        }
+
+        .edit-form label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        .edit-form input {
+            width: calc(100% - 20px);
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .edit-form button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        /* Adjust the placement of Edit Profile link to the right */
+        .edit-profile {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <span class="go-back" onclick="goBack()">← Go Back</span>
+<div class="profile-picture">
+  <!-- Your image tag goes here -->
+  <img id="profile-picture" src="login image.jpg" alt="Profile Picture">
+</div>
+        <div class="user-info" id="userInfo">
+            <h1>John Doe</h1>
+            <p>Email: john.doe@example.com</p>
+            <p>Gender: Male</p>
+            <p>Occupation: Web Developer</p>
+            <p>Program: Computer Science</p>
+        </div>
+
+        <a href="editprofile.html" class="edit-profile" onclick="toggleForm()">Edit Profile</a>
+
+        <a href="FindMyClass.html" class="sign-out">Sign Out</a>
+    </div>
+
+<script>
+    // Retrieve updated user information from localStorage
+    var updatedUserInfo = localStorage.getItem('updatedUserInfo');
+
+if (updatedUserInfo) {
+    try {
+        var userInfo = JSON.parse(updatedUserInfo);
+
+        // Check if all required properties exist
+        if (userInfo && userInfo.name && userInfo.email && userInfo.gender && userInfo.occupation && userInfo.program) {
+            document.getElementById("userInfo").innerHTML = `
+                <h1>${userInfo.name}</h1>
+                <p>Email: ${userInfo.email}</p>
+                <p>Gender: ${userInfo.gender}</p>
+                <p>Occupation: ${userInfo.occupation}</p>
+                <p>Program: ${userInfo.program}</p>
+            `;
+        } else {
+            console.error("Incomplete user information in localStorage");
+        }
+    } catch (error) {
+        console.error("Error parsing user information:", error);
+    }
+}else {
+    // Handle the case when user information is not available
+    console.log("User information not found in localStorage");
+}
+
+    // Retrieve the edited profile picture from localStorage
+    var editedProfilePicture = localStorage.getItem('editedProfilePicture');
+    if (editedProfilePicture) {
+        // Update the profile picture
+        document.getElementById("profile-picture").src = editedProfilePicture;
+    } else {
+        // Handle the case when the edited profile picture is not available
+        console.log("Edited profile picture not found in localStorage");
+    }
+
+    function goBack() {
+        window.location.href = "homepage.html"; // Replace with the URL of your homepage
+    }
+</script>
+</body>
+</html>

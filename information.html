@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recent</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #f4f4f4;
+        }
+
+        #ground {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 20px;
+            background-color: #ccc;
+        }
+
+        #dinosaur {
+            position: absolute;
+            bottom: 20px;
+            left: 50px;
+            width: 50px;
+            height: 50px;
+            background-color: #65a7f3;
+        }
+
+        #obstacle {
+            position: absolute;
+            bottom: 20px;
+            left: 100%;
+            width: 30px;
+            background-color: #ff0000;
+        }
+
+         #score {
+            position: absolute;
+            left: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Page Under Construction</h1>
+    <div id="dinosaur"></div>
+    <div id="ground"></div>
+    <div id="obstacle"></div>
+    <div id="score">Score: 0</div>
+
+    <script>
+        const dinosaur = document.getElementById('dinosaur');
+        const ground = document.getElementById('ground');
+        const obstacle = document.getElementById('obstacle');
+        const scoreElement = document.getElementById('score');
+        let isJumping = false;
+        let score = 0;
+
+        document.addEventListener('keydown', jump);
+
+        function jump(event) {
+            if (event.code === 'Space' && !isJumping) {
+                isJumping = true;
+                let jumpHeight = 0;
+                let jumpInterval = setInterval(() => {
+                    jumpHeight += 5;
+                    dinosaur.style.bottom = 20 + jumpHeight + 'px';
+
+                    if (jumpHeight >= 100) {
+                        clearInterval(jumpInterval);
+                        let fallInterval = setInterval(() => {
+                            jumpHeight -= 5;
+                            dinosaur.style.bottom = 20 + jumpHeight + 'px';
+
+                            if (jumpHeight <= 0) {
+                                clearInterval(fallInterval);
+                                isJumping = false;
+                            }
+                        }, 20);
+                    }
+                }, 20);
+            }
+        }
+
+        function moveGround() {
+            let groundPosition = 0;
+            let moveGroundInterval = setInterval(() => {
+                groundPosition -= 5;
+                ground.style.backgroundPosition = groundPosition + 'px';
+
+                if (groundPosition <= -20) {
+                    groundPosition = 0;
+                }
+            }, 20);
+        }
+
+        function moveObstacle() {
+            let obstaclePosition = window.innerWidth;
+            let obstacleHeight = Math.random() * 50 + 20; // Random height between 20 and 70
+            obstacle.style.height = obstacleHeight + 'px';
+
+            let moveObstacleInterval = setInterval(() => {
+                obstaclePosition -= 5;
+                obstacle.style.left = obstaclePosition + 'px';
+
+                if (obstaclePosition <= -30) {
+                    obstaclePosition = window.innerWidth;
+                    obstacleHeight = Math.random() * 50 + 20;
+                    obstacle.style.height = obstacleHeight + 'px';
+                    score++;
+                    scoreElement.textContent = 'Score: ' + score;
+                }
+
+                if (
+                    dinosaur.offsetLeft < obstacle.offsetLeft + obstacle.offsetWidth &&
+                    dinosaur.offsetLeft + dinosaur.offsetWidth > obstacle.offsetLeft &&
+                    dinosaur.offsetTop < obstacle.offsetTop + obstacle.offsetHeight &&
+                    dinosaur.offsetTop + dinosaur.offsetHeight > obstacle.offsetTop
+                ) {
+                    alert('Game Over! Score: ' + score);
+                    clearInterval(moveObstacleInterval);
+                }
+            }, 20);
+        }
+
+        moveGround();
+        moveObstacle();
+    </script>
+</body>
+</html>
